@@ -15,7 +15,7 @@ myMap.controller('CanvasCtrl', function($scope){
        
     ];
 
-    function fillTicketsArray(tickets)
+    $scope.fillTicketsArray = function (tickets)
     {
 	    for(var i = 0; i < maxTickets; i++)
 	    {
@@ -29,6 +29,7 @@ myMap.controller('CanvasCtrl', function($scope){
 	    }
         console.log(tickets);
     } // End func
+   
 
      $scope.addData = function() {
         var id = 0;
@@ -76,6 +77,19 @@ myMap.controller('CanvasCtrl', function($scope){
         context.stroke();  
     }
     
+   $scope.drawTicketObj = function (tickets){
+       context.beginPath();
+       for(var i = 0; i < tickets.length; i ++){
+           var ticket = tickets[i];
+           context.moveTo(ticket.x, ticket.y);
+            context.arc(ticket.x, ticket.y, ticket.r, 0, 2*Math.PI, false);
+       }
+       context.fillStyle = "red";
+       context.fill();
+   }
+    
+
+
     function drawLine(data1, data2) {
         context.beginPath();
         context.moveTo(data1.x, data1.y);
@@ -87,8 +101,11 @@ myMap.controller('CanvasCtrl', function($scope){
     // setup
     // canvas.width = 600;
     // canvas.height = 400;
+    
     context.globalAlpha = 1.0;
     context.beginPath();
-    draw($scope.data);    
+    $scope.fillTicketsArray(tickets);
+    $scope.drawTicketObj(tickets);
+    //draw($scope.data);    
 
 });
