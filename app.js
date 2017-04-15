@@ -5,8 +5,8 @@ myMap.controller('CanvasCtrl', function($scope){
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
 
-    canvas.width = 600; // Sets the canvas width
-    canvas.height = 400; // Sets the canvas height
+    canvas.width = 20; // Sets the canvas width
+    canvas.height = 20; // Sets the canvas height
     var W = canvas.width; // Shorten variable name
     var H = canvas.height; // Shorten variable name
     var tickets = [];
@@ -21,27 +21,34 @@ myMap.controller('CanvasCtrl', function($scope){
 	    for(var i = 0; i < maxTickets; i++)
 	    {
 		    tickets.push({
+            _id: "00"+ i,
 			x: Math.floor(Math.random()*W), //x-coordinate
 			y: Math.floor(Math.random()*H), //y-coordinate
-			r: + Math.floor((Math.random()*5) + 2), // radius
-			numOfTickets: Math.floor(Math.random()* 10), // number of tickets
-            price: "$" + Math.floor(Math.random()*100),
+			r: + Math.floor(Math.random()*2) , // radius
+			ticksPrice: randomArray(Math.floor(Math.random()*30), 150),
             dist: 0
 		    });
 	    }
         console.log(tickets);
     } // End func
     //userData
-    var userData = {
-        x : 200,
-        y: 300
+    //http://stackoverflow.com/questions/5836833/create-a-array-with-random-values-in-javascript
+    function randomArray(length, max) {
+        return Array.apply(null, Array(length)).map(function() {
+            return Math.round(Math.random() * max);
+        });
     }
-    
+    var userData = {
+        x : 4,
+        y: 6
+    }
+    //https://xlinux.nist.gov/dads/HTML/manhattanDistance.html
     $scope.calculateManhattonDist = function(userData){
         for(var i = 0; i < tickets.length; i++){
             var ticket = tickets[i];
             ticket.dist = ((userData.x - ticket.x) + (userData.y - ticket.y)); 
         }
+        //https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
         tickets.sort(function(a, b) {
             return parseFloat(a.dist) - parseFloat(b.dist);
         });
