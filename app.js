@@ -4,10 +4,31 @@ myMap.controller('CanvasCtrl', function($scope){
 
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
-    
+
+    canvas.width = 600; // Sets the canvas width
+    canvas.height = 400; // Sets the canvas height
+    var W = canvas.width; // Shorten variable name
+    var H = canvas.height; // Shorten variable name
+    var tickets = [];
+    var maxTickets = 10;
     $scope.data = [
        
     ];
+
+    function fillTicketsArray(tickets)
+    {
+	    for(var i = 0; i < maxTickets; i++)
+	    {
+		    tickets.push({
+			x: Math.floor(Math.random()*W), //x-coordinate
+			y: Math.floor(Math.random()*H), //y-coordinate
+			r: Math.floor((Math.random()*5) + 2), // radius
+			numOfTickets: Math.floor(Math.random()* 10), // number of tickets
+            price: Math.floor(Math.random()*100)
+		    });
+	    }
+        console.log(tickets);
+    } // End func
 
      $scope.addData = function() {
         var id = 0;
@@ -64,8 +85,8 @@ myMap.controller('CanvasCtrl', function($scope){
     }
     
     // setup
-    canvas.width = 600;
-    canvas.height = 400;
+    // canvas.width = 600;
+    // canvas.height = 400;
     context.globalAlpha = 1.0;
     context.beginPath();
     draw($scope.data);    
