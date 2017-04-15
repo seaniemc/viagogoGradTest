@@ -11,6 +11,7 @@ myMap.controller('CanvasCtrl', function($scope){
     var H = canvas.height; // Shorten variable name
     var tickets = [];
     var maxTickets = 10;
+
     $scope.data = [
        
     ];
@@ -22,14 +23,30 @@ myMap.controller('CanvasCtrl', function($scope){
 		    tickets.push({
 			x: Math.floor(Math.random()*W), //x-coordinate
 			y: Math.floor(Math.random()*H), //y-coordinate
-			r: Math.floor((Math.random()*5) + 2), // radius
+			r: + Math.floor((Math.random()*5) + 2), // radius
 			numOfTickets: Math.floor(Math.random()* 10), // number of tickets
-            price: Math.floor(Math.random()*100)
+            price: "$" + Math.floor(Math.random()*100),
+            dist: 0
 		    });
 	    }
         console.log(tickets);
     } // End func
-   
+    //userData
+    var userData = {
+        x : 200,
+        y: 300
+    }
+    
+    $scope.calculateManhattonDist = function(userData){
+        for(var i = 0; i < tickets.length; i++){
+            var ticket = tickets[i];
+            ticket.dist = ((userData.x - ticket.x) + (userData.y - ticket.y)); 
+        }
+        tickets.sort(function(a, b) {
+            return parseFloat(a.dist) - parseFloat(b.dist);
+        });
+        console.log(tickets);
+    }
 
      $scope.addData = function() {
         var id = 0;
@@ -98,6 +115,28 @@ myMap.controller('CanvasCtrl', function($scope){
         context.stroke();
     }
     
+    //============= sort array based on x and y ===========
+    //http://stackoverflow.com/questions/6913512/how-to-sort-an-array-of-objects-by-multiple-fields
+    function fieldSorter(fields) {
+        return function (a, b) {
+            return fields
+                .map(function (o) {
+                    var dir = 1;
+                    if (o[0] === '-') {
+                    dir = -1;
+                    o=o.substring(1);
+                    }
+                    if (a[o] > b[o]) return dir;
+                    if (a[o] < b[o]) return -(dir);
+                    return 0;
+                })
+                .reduce(function firstNonZeroValue (p,n) {
+                    return p ? p : n;
+                }, 0);
+        };
+    }
+   
+
     // setup
     // canvas.width = 600;
     // canvas.height = 400;
@@ -106,6 +145,7 @@ myMap.controller('CanvasCtrl', function($scope){
     context.beginPath();
     $scope.fillTicketsArray(tickets);
     $scope.drawTicketObj(tickets);
-    //draw($scope.data);    
+    $scope.calculateManhattonDist(userData);
+    draw($scope.data);    
 
 });
