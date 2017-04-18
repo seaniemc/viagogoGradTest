@@ -6,40 +6,27 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.4.2/angular-ui-router.js"></script>
         <script src="app.js"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link href="style.css" rel="stylesheet" type="text/css">
         <title></title>
     </head>
     <body ng-app="myMap">
-        <div id="angular-test" style="margin: 10px" ng-app>
-            <div ng-controller="EnterCtrl">
-                <h1>Viagogo test</h1>     
-                <form ng-submit="goToAnswer()">
-                    <input ng-model="formData.x"  size="2" placeholder="X" required type="number" min="0" max="20">
-                    <input ng-model="formData.y"  size="2" placeholder="Y" required type="number" min="0" max="20">
-                    <!--<input ng-model="amount"  size="3" placeholder="Amount" required type="number" min="2" max="100">-->
-                    <input class="btn-primary" type="submit" value="Add point">
-                </form>
-                <canvas id="canvas" style="border: 1px gray solid; float: left"></canvas>
-                <div id="list" style="margin-left: 620px; float: left;">
-                Points:
-                <ul>
-                    <!--<li ng-repeat="point in data">
-                        [{{point.x}}, {{point.y}}] <a ng-click="removePoint(point)">[x]</a>
-                    </li>-->
-                </ul>
-            </div>
-        <div>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
+        <div class="container">
+            <div id="angular-test" style="margin: 10px" ng-app>
+                <div ng-controller="EnterCtrl">
+                    <h1>Viagogo test</h1>     
+                    <form ng-submit="goToAnswer()">
+                        <input ng-model="formData.x"  size="2" placeholder="X" required type="number" min="0" max="20">
+                        <input ng-model="formData.y"  size="2" placeholder="Y" required type="number" min="0" max="20">
+                        <!--<input ng-model="amount"  size="3" placeholder="Amount" required type="number" min="2" max="100">-->
+                        <input class="btn-primary" type="submit" value="Get Prices">
+                    </form>
+                    <!--<canvas id="canvas" style="border: 1px gray solid; float: left"></canvas>
+                    <div id="list" style="margin-left: 620px; float: left;">-->
+                    
+                </div>
+            <div>
+        </div>
+    
           <ui-view></ui-view>  
     </body>
 </html>

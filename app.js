@@ -31,19 +31,14 @@ myMap.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
 });
 myMap.controller('CanvasCtrl', ['$scope','$state','$stateParams',function CanvasCtrl($scope,$state,$stateParams){
 
-    var canvas = document.getElementById('canvas');
-    var context = canvas.getContext('2d');
-
-    canvas.width = 20; // Sets the canvas width
-    canvas.height = 20; // Sets the canvas height
-    var W = canvas.width; // Shorten variable name
-    var H = canvas.height; // Shorten variable name
+    var W = 20; // Shorten variable name
+    var H = 20; // Shorten variable name
     var tickets = [];
     var maxTickets = 10;
-    //var userData;
+    $scope.answerArr = [];
+    
 
     var userData = $state.params.coor;
-    // var userDataY = $stateParams.y;
    var obj = JSON.parse(userData);
    
    console.log(obj);
@@ -57,12 +52,12 @@ myMap.controller('CanvasCtrl', ['$scope','$state','$stateParams',function Canvas
             _id: "00"+ i,
 			x: Math.floor(Math.random()*W), //x-coordinate
 			y: Math.floor(Math.random()*H), //y-coordinate
-			r: + Math.floor(Math.random()*2) , // radius
-			ticksPrice: randomArray(Math.floor(Math.random()*30), 150),
+            //creates a random array of between zero and 30 with random values between 
+			ticksPrice: randomArray(Math.floor(Math.random()*30 + 1), 150), 
             dist: 0
 		    });
 	    }
-        //console.log(tickets);
+        
     } // End func
     //userData
     //http://stackoverflow.com/questions/5836833/create-a-array-with-random-values-in-javascript
@@ -80,7 +75,7 @@ myMap.controller('CanvasCtrl', ['$scope','$state','$stateParams',function Canvas
             ticket.dist = ((userData.x - ticket.x) + (userData.y - ticket.y)); 
         }
         minAbs(tickets);
-        console.log(tickets);
+        //console.log(tickets);
     }
         
     //http://stackoverflow.com/questions/20431453/provide-number-close-to-zero-in-js
@@ -94,14 +89,23 @@ myMap.controller('CanvasCtrl', ['$scope','$state','$stateParams',function Canvas
          
     }
 
+    $scope.answer = function (){
+        var asnwerArr = []
+        for (var i = 0; i <= 4; i++){
+            var ticket = tickets[i];
+            ticket.ticksPrice.sort(function(a, b){return a-b});
+            asnwerArr.push(ticket);
+        }
+        $scope.answerArr = asnwerArr;
+        console.log($scope.answerArr);
+        //return asnwerArr;
+    }
     
+
     
-    context.globalAlpha = 1.0;
-    context.beginPath();
     $scope.fillTicketsArray(tickets);
     $scope.calculateManhattonDist(obj);
-    //draw($scope.data);    
-
+    $scope.answer();
 }]);
 
 
@@ -111,41 +115,11 @@ myMap.controller('EnterCtrl',['$scope', '$state', function EnterCtrl($scope,$sta
         y: 0
     };
     var userData = $scope.formData;
-   // console.log(userData);
-
+   
     $scope.goToAnswer = function(){
-//console.log(userData);
-            $state.go('answer', {'coor': JSON.stringify(userData)});
-        };
+        $state.go('answer', {'coor': JSON.stringify(userData)});
+    };
 
         	
-// //I'm assuming that by empty you mean "has no properties of its own".
 
-// // Speed up calls to hasOwnProperty
-// var hasOwnProperty = Object.prototype.hasOwnProperty;
-
-// function isEmpty(obj) {
-
-//     // null and undefined are "empty"
-//     if (obj == null) return true;
-
-//     // Assume if it has a length property with a non-zero value
-//     // that that property is correct.
-//     if (obj.length > 0)    return false;
-//     if (obj.length === 0)  return true;
-
-//     // If it isn't an object at this point
-//     // it is empty, but it can't be anything *but* empty
-//     // Is it empty?  Depends on your application.
-//     if (typeof obj !== "object") return true;
-
-//     // Otherwise, does it have any properties of its own?
-//     // Note that this doesn't handle
-//     // toString and valueOf enumeration bugs in IE < 9
-//     for (var key in obj) {
-//         if (hasOwnProperty.call(obj, key)) return false;
-//     }
-
-//     return true;
-// }
 }]); 
