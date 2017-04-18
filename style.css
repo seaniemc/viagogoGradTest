@@ -1,5 +1,7 @@
 .friends {
+  margin-top: 20px;
   border-collapse: collapse;
+  text-align: center;
 }
 
 .friends th {
@@ -15,10 +17,9 @@
 .container{
     margin-top: 30px;
     /*margin-left: 10px;*/
-    text-align:center;
+    text-align:left;
 }
-.myContainer{
- margin-top: 30px;
-    /*margin-left: 10px;*/
-    text-align:center;
+
+h1{
+  margin-bottom: 50px;
 }
