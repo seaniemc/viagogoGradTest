@@ -29,7 +29,7 @@ myMap.controller('CanvasCtrl', function($scope){
             dist: 0
 		    });
 	    }
-        console.log(tickets);
+        //console.log(tickets);
     } // End func
     //userData
     //http://stackoverflow.com/questions/5836833/create-a-array-with-random-values-in-javascript
@@ -48,11 +48,21 @@ myMap.controller('CanvasCtrl', function($scope){
             var ticket = tickets[i];
             ticket.dist = ((userData.x - ticket.x) + (userData.y - ticket.y)); 
         }
-        //https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
-        tickets.sort(function(a, b) {
-            return parseFloat(a.dist) - parseFloat(b.dist);
-        });
+        minAbs(tickets);
         console.log(tickets);
+    }
+        //https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+    //     tickets.sort(function(a, b) {
+    //         return parseFloat(a.dist) - parseFloat(b.dist);
+    //     });
+    //     console.log(tickets);
+    // }
+    //http://stackoverflow.com/questions/20431453/provide-number-close-to-zero-in-js
+     function minAbs (x) {
+        return x.sort(function (a, b) {
+            return Math.abs(a.dist) > Math.abs(b.dist) ? 1 : -1;
+        })[0];
+         
     }
 
      $scope.addData = function() {
@@ -124,24 +134,24 @@ myMap.controller('CanvasCtrl', function($scope){
     
     //============= sort array based on x and y ===========
     //http://stackoverflow.com/questions/6913512/how-to-sort-an-array-of-objects-by-multiple-fields
-    function fieldSorter(fields) {
-        return function (a, b) {
-            return fields
-                .map(function (o) {
-                    var dir = 1;
-                    if (o[0] === '-') {
-                    dir = -1;
-                    o=o.substring(1);
-                    }
-                    if (a[o] > b[o]) return dir;
-                    if (a[o] < b[o]) return -(dir);
-                    return 0;
-                })
-                .reduce(function firstNonZeroValue (p,n) {
-                    return p ? p : n;
-                }, 0);
-        };
-    }
+    // function fieldSorter(fields) {
+    //     return function (a, b) {
+    //         return fields
+    //             .map(function (o) {
+    //                 var dir = 1;
+    //                 if (o[0] === '-') {
+    //                 dir = -1;
+    //                 o=o.substring(1);
+    //                 }
+    //                 if (a[o] > b[o]) return dir;
+    //                 if (a[o] < b[o]) return -(dir);
+    //                 return 0;
+    //             })
+    //             .reduce(function firstNonZeroValue (p,n) {
+    //                 return p ? p : n;
+    //             }, 0);
+    //     };
+    // }
    
 
     // setup
@@ -155,4 +165,4 @@ myMap.controller('CanvasCtrl', function($scope){
     $scope.calculateManhattonDist(userData);
     draw($scope.data);    
 
-});
+    });
