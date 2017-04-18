@@ -1,6 +1,35 @@
-var myMap = angular.module('myMap', []);
+var myMap = angular.module('myMap', ['ui.router']);
 
-myMap.controller('CanvasCtrl', function($scope){
+myMap.run(['$rootScope', '$state', '$stateParams',
+  function ($rootScope, $state, $stateParams) {
+    $rootScope.$state = $state;
+    $rootScope.$stateParams = $stateParams;
+}]);
+
+myMap.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
+
+    var homeState = {
+        name: 'home',
+        url: '/',
+        templateUrl: 'partials/welcome.html',
+        controller: 'EnterCtrl'
+    };
+    var answerState = {
+        name: 'answer',
+        url: '/answer/:coor',
+        templateUrl: 'partials/answer.html',
+        controller: 'CanvasCtrl',
+        params: {coor: null}
+    };
+
+    $stateProvider
+        .state(homeState)
+        .state(answerState);
+
+    $urlRouterProvider.otherwise('/');
+ 
+});
+myMap.controller('CanvasCtrl', ['$scope','$state','$stateParams',function CanvasCtrl($scope,$state,$stateParams){
 
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
@@ -11,10 +40,14 @@ myMap.controller('CanvasCtrl', function($scope){
     var H = canvas.height; // Shorten variable name
     var tickets = [];
     var maxTickets = 10;
+    //var userData;
 
-    $scope.data = [
-       
-    ];
+    var userData = $state.params.coor;
+    // var userDataY = $stateParams.y;
+   var obj = JSON.parse(userData);
+   
+   console.log(obj);
+   console.log("canvas");
 
     $scope.fillTicketsArray = function (tickets)
     {
@@ -38,12 +71,10 @@ myMap.controller('CanvasCtrl', function($scope){
             return Math.round(Math.random() * max);
         });
     }
-    var userData = {
-        x : 4,
-        y: 6
-    }
+
     //https://xlinux.nist.gov/dads/HTML/manhattanDistance.html
     $scope.calculateManhattonDist = function(userData){
+        console.log(userData);
         for(var i = 0; i < tickets.length; i++){
             var ticket = tickets[i];
             ticket.dist = ((userData.x - ticket.x) + (userData.y - ticket.y)); 
@@ -51,13 +82,11 @@ myMap.controller('CanvasCtrl', function($scope){
         minAbs(tickets);
         console.log(tickets);
     }
-        //https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
-    //     tickets.sort(function(a, b) {
-    //         return parseFloat(a.dist) - parseFloat(b.dist);
-    //     });
-    //     console.log(tickets);
-    // }
+        
     //http://stackoverflow.com/questions/20431453/provide-number-close-to-zero-in-js
+    //this method re-orders the ticket array based on the distance variable 
+    //It returns them closest to zero, as the distance is returned in most cases as a minus value
+    //sorting normally will not do. 
      function minAbs (x) {
         return x.sort(function (a, b) {
             return Math.abs(a.dist) > Math.abs(b.dist) ? 1 : -1;
@@ -65,104 +94,58 @@ myMap.controller('CanvasCtrl', function($scope){
          
     }
 
-     $scope.addData = function() {
-        var id = 0;
-        if($scope.data.length > 0) {
-            id = $scope.data[$scope.data.length-1].id + 1;
-        }
-        var p = {id: id, x: $scope.x, y: $scope.y, amount: $scope.amount};
-        $scope.data.push(p);
-        $scope.x = '';
-        $scope.y = '';
-        $scope.amount = '';
-        draw($scope.data);
-    };
     
-    $scope.removePoint = function(point) {
-        console.log(point);
-        for(var i=0; i<$scope.data.length; i++) {
-            if($scope.data[i].id === point.id) {
-                console.log("removing item at position: "+i);
-                $scope.data.splice(i, 1);    
-            }
-        }
-        
-        context.clearRect(0,0,600,400);
-        draw($scope.data);
-        console.log($scope.data);
-    }
-
-     function draw(data) {
-        for(var i=0; i<data.length; i++) {
-            drawDot(data[i]);
-            if(i > 0) {
-                drawLine(data[i], data[i-1]);
-            }
-        }
-    }
-    
-    function drawDot(data) {
-        context.beginPath();
-        context.arc(data.x, data.y, data.amount, 0, 2*Math.PI, false);
-        context.fillStyle = "#ccddff";
-        context.fill();
-        context.lineWidth = 1;
-        context.strokeStyle = "#666666";
-        context.stroke();  
-    }
-    
-   $scope.drawTicketObj = function (tickets){
-       context.beginPath();
-       for(var i = 0; i < tickets.length; i ++){
-           var ticket = tickets[i];
-           context.moveTo(ticket.x, ticket.y);
-            context.arc(ticket.x, ticket.y, ticket.r, 0, 2*Math.PI, false);
-       }
-       context.fillStyle = "red";
-       context.fill();
-   }
-    
-
-
-    function drawLine(data1, data2) {
-        context.beginPath();
-        context.moveTo(data1.x, data1.y);
-        context.lineTo(data2.x, data2.y);
-        context.strokeStyle = "black";
-        context.stroke();
-    }
-    
-    //============= sort array based on x and y ===========
-    //http://stackoverflow.com/questions/6913512/how-to-sort-an-array-of-objects-by-multiple-fields
-    // function fieldSorter(fields) {
-    //     return function (a, b) {
-    //         return fields
-    //             .map(function (o) {
-    //                 var dir = 1;
-    //                 if (o[0] === '-') {
-    //                 dir = -1;
-    //                 o=o.substring(1);
-    //                 }
-    //                 if (a[o] > b[o]) return dir;
-    //                 if (a[o] < b[o]) return -(dir);
-    //                 return 0;
-    //             })
-    //             .reduce(function firstNonZeroValue (p,n) {
-    //                 return p ? p : n;
-    //             }, 0);
-    //     };
-    // }
-   
-
-    // setup
-    // canvas.width = 600;
-    // canvas.height = 400;
     
     context.globalAlpha = 1.0;
     context.beginPath();
     $scope.fillTicketsArray(tickets);
-    $scope.drawTicketObj(tickets);
-    $scope.calculateManhattonDist(userData);
-    draw($scope.data);    
+    $scope.calculateManhattonDist(obj);
+    //draw($scope.data);    
 
-    });
+}]);
+
+
+myMap.controller('EnterCtrl',['$scope', '$state', function EnterCtrl($scope,$state){
+    $scope.formData = {
+        x: 0,
+        y: 0
+    };
+    var userData = $scope.formData;
+   // console.log(userData);
+
+    $scope.goToAnswer = function(){
+//console.log(userData);
+            $state.go('answer', {'coor': JSON.stringify(userData)});
+        };
+
+        	
+// //I'm assuming that by empty you mean "has no properties of its own".
+
+// // Speed up calls to hasOwnProperty
+// var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+// function isEmpty(obj) {
+
+//     // null and undefined are "empty"
+//     if (obj == null) return true;
+
+//     // Assume if it has a length property with a non-zero value
+//     // that that property is correct.
+//     if (obj.length > 0)    return false;
+//     if (obj.length === 0)  return true;
+
+//     // If it isn't an object at this point
+//     // it is empty, but it can't be anything *but* empty
+//     // Is it empty?  Depends on your application.
+//     if (typeof obj !== "object") return true;
+
+//     // Otherwise, does it have any properties of its own?
+//     // Note that this doesn't handle
+//     // toString and valueOf enumeration bugs in IE < 9
+//     for (var key in obj) {
+//         if (hasOwnProperty.call(obj, key)) return false;
+//     }
+
+//     return true;
+// }
+}]); 
