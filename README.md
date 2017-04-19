@@ -1,14 +1,26 @@
 # viagogoGradTest
 This program takes a pair of x and y coordinates from the user and returns a list of the five closet events, with the data of id and cheapest ticket price.  
+The program was written in the Javascript frame work of Angular js. 
 
 ## How to run the program. 
 You can download the zip of the project or use git clone 
 ```
 git clone https://github.com/seaniemc/viagogoGradTest.git
 ```
-To run the program you need to run a server, and open a web borwser on port 8080 (localhost:8080)
-open command prompt and navigate to the project directory. I used a Nodejs server but you can use one of your choosing.
-to run Node server
+To run the program you need to run a web server, and open a web borwser on port 8080 (localhost:8080).
+Open command prompt and navigate to the project directory. I used a Nodejs server but you can use one of your choosing.
+To run the Node server type command.
 ```
  http-server
  ```
+ open up a web broswer and type 
+ ```
+ localhost:8080
+ ```
+ 
+ ## Assumptions Made
+ + The world is 20 by 20, 20 X and 20 Y
+ + Data for the event x,y and ticksPrice were to be randomly generated. 
+ + Ticket prices in US dollars
+ +
+ 
