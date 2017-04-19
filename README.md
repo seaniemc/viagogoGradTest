@@ -22,5 +22,12 @@ To run the Node server type command.
  + The world is 20 by 20, 20 X and 20 Y
  + Data for the event x,y and ticksPrice were to be randomly generated. 
  + Ticket prices in US dollars
- +
+ + Return only the cheapest price.
+ + Only one event per X and y coordinate.
+ 
+ ## What would I change?
+ 
+ + If I was working with larger world I would have more events. I would also represent the data in a Graphical form on a
+ HTML canvas object. 
+ + If I had multiple events at the same location I would return the cheapest event ticket for the location. 
  
