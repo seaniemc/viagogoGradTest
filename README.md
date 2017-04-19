@@ -9,7 +9,7 @@ git clone https://github.com/seaniemc/viagogoGradTest.git
 ```
 To run the program you need to run a web server, and open a web borwser on port 8080 (localhost:8080).
 Open command prompt and navigate to the project directory. I used a Nodejs server but you can use one of your choosing.
-To run the Node server type command.
+To run the Node server type the command.
 ```
  http-server
  ```
