@@ -7,13 +7,13 @@ You can download the zip of the project or use git clone
 ```
 git clone https://github.com/seaniemc/viagogoGradTest.git
 ```
-To run the program you need to run a web server, and open a web borwser on port 8080 (localhost:8080).
+To run the program, you need to run a web server, and open a web browser on port 8080 (localhost:8080).
 Open command prompt and navigate to the project directory. I used a Nodejs server but you can use one of your choosing.
-To run the Node server type the command.
+To run the Node server, type the command.
 ```
  http-server
  ```
- open up a web broswer and type 
+ open up a web browser and type 
  ```
  localhost:8080
  ```
@@ -30,4 +30,3 @@ To run the Node server type the command.
  + If I was working with larger world I would have more events. I would also represent the data in a Graphical form on a
  HTML canvas object. 
  + If I had multiple events at the same location I would return the cheapest event ticket for the location. 
- 
